@@ -17,15 +17,15 @@ import java.util.UUID;
 public class Student {
 
     @Id
-    @Column(name = "student_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID Id;
+    private UUID id;
 
     @Column(name = "group_id")
     private UUID groupId;
     @Column(name = "first_name")
-    private String studentFirstName;
-    @Column(name = "surname")
-    private String surname; // можно было бы и переименовать
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
 
 }

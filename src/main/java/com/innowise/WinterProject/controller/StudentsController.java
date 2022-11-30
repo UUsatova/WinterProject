@@ -1,37 +1,44 @@
 package com.innowise.WinterProject.controller;
 
+import com.innowise.WinterProject.entity.Student;
+import com.innowise.WinterProject.servise.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "/students")
 public class StudentsController {
 
+    StudentService studentService;
+
+    @Autowired
+    public StudentsController(StudentService studentService){
+        this.studentService = studentService;
+    }
+
     @GetMapping
-    public String getStudents() { //List<Student>
-
-        return "tipa smat studentov";
+    public List<Student> getStudents() {
+        return studentService.getAllStudents();
     }
 
-    ///как доставать студента? По id по имени полному не полному,
     @GetMapping(value = "/{id}")
-    public String getStudentById(@PathVariable("id") String id){
-
-        return "";
+    public Student getStudentById(@PathVariable("id") UUID id){
+        return studentService.getStudentById(id);
     }
 
-    public String getStudentByName(){
-        return "";
-    }
-    ////
-
-    public void addStudent(){
-
+    @PostMapping
+    public void addStudent(@RequestBody Student student){
+        studentService.addStudent(student);
     }
 
-    public void editStudent(){}
+    @DeleteMapping(value = "/{id}")
+    public void removeStudent(@PathVariable("id") UUID id){
+        studentService.removeStudent(id);
+    }
 
 
 
