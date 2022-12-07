@@ -1,12 +1,13 @@
 package com.innowise.WinterProject.servise;
 
 import com.innowise.WinterProject.entity.Student;
+import com.innowise.WinterProject.exeption.WrongRequestException;
+import com.innowise.WinterProject.mapper.StudentMapper;
 import com.innowise.WinterProject.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -14,13 +15,14 @@ import java.util.UUID;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
-    public Optional<Student> getStudentById(UUID id) {
-        return studentRepository.findById(id);
+    public Student getStudentById(UUID id) {
+        return studentRepository.findById(id).orElseThrow(() -> new WrongRequestException(id));
     }
 
 
@@ -28,16 +30,13 @@ public class StudentService {
         return studentRepository.save(newStudent);
     }
 
-    public boolean removeStudent(UUID id) {
+    public void removeStudent(UUID id) {
         studentRepository.deleteById(id);
-        return getStudentById(id) == null;
-
     }
-//получается тут метод апдейта не нужен совсем????
-//    public StudentDto updateStudent(Student student){
-//        Student student = getStudentById(studentDto.getId());
-//        studentMapper.updateStudent(studentDto);
-//        return null;
-//    }
+
+    public Student updateStudent(Student studentAfterChanges) {
+        Student studentBeforeChanges = studentRepository.findById(studentAfterChanges.getId()).get();
+        return studentRepository.save(studentMapper.updateStudent(studentBeforeChanges, studentAfterChanges));
+    }
 
 }

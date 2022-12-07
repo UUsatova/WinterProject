@@ -1,4 +1,4 @@
 package com.innowise.WinterProject.group;
 
-public interface Set {
+public interface Update {
 }

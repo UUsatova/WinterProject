@@ -7,12 +7,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper()
+@Mapper
 public interface StudentMapper {
     StudentDto studentToDto(Student student);
     Student dtoToStudent(StudentDto studentDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateStudent(@MappingTarget Student student,StudentDto StudentDto);
+    Student updateStudent(Student studentBeforeChanges, @MappingTarget Student studentAfterChanges);
 
 }
