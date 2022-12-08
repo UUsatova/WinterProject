@@ -16,7 +16,7 @@ public @interface ExistInDatabase {
 
     Class<? extends JpaRepository<?, UUID>> repository();
 
-    String message() default "Id doesn't exist.Please create user before updating";
+    String message() default "Id doesn't exist.Please create before updating";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

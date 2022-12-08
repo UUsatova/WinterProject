@@ -24,10 +24,9 @@ public class StudentsController {
 
     @GetMapping
     public ResponseEntity<List<StudentDto>> getStudents() {
-        List<StudentDto> allStudents = studentService.getAllStudents()
+        return ResponseEntity.ok(studentService.getAllStudents()
                 .stream().map(studentMapper::studentToDto)
-                .toList();
-        return ResponseEntity.ok(allStudents);
+                .toList());
     }
 
     @GetMapping(value = "/{id}")
@@ -47,7 +46,7 @@ public class StudentsController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping
     public ResponseEntity<StudentDto> updateStudent(@RequestBody @Validated(Update.class) StudentDto studentDto) {
         return ResponseEntity.ok(studentMapper.studentToDto(
                 studentService.updateStudent(studentMapper.dtoToStudent(studentDto))));
