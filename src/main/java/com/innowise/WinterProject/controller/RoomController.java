@@ -22,31 +22,31 @@ public class RoomController {
 
 
     @GetMapping
-    public ResponseEntity<List<RoomDto>> getStudents() {
+    public ResponseEntity<List<RoomDto>> getRoom() {
         return ResponseEntity.ok(roomService.getAllRooms()
                 .stream().map(roomMapper::roomToDto)
                 .toList());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<RoomDto> getStudentById(@PathVariable UUID id) {
+    public ResponseEntity<RoomDto> getRoomById(@PathVariable UUID id) {
         return ResponseEntity.ok(roomMapper.roomToDto(roomService.getRoomById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<RoomDto> addStudent(@RequestBody @Validated(Creation.class) RoomDto roomDto) {
+    public ResponseEntity<RoomDto> addRoom(@RequestBody @Validated(Creation.class) RoomDto roomDto) {
         return ResponseEntity.ok(roomMapper.roomToDto(
                 roomService.addRoom(roomMapper.dtoToRoom(roomDto))));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> removeStudent(@PathVariable UUID id) {
+    public ResponseEntity<?> removeRoom(@PathVariable UUID id) {
         roomService.removeRoom(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<RoomDto> updateStudent(@RequestBody @Validated(Update.class) RoomDto roomDto) {
+    public ResponseEntity<RoomDto> updateRoom(@RequestBody @Validated(Update.class) RoomDto roomDto) {
         return ResponseEntity.ok(roomMapper.roomToDto(
                 roomService.updateRoom(roomMapper.dtoToRoom(roomDto))));
     }

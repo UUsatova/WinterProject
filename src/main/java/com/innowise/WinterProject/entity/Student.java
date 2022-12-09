@@ -21,8 +21,10 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "group_id")
-    private UUID groupId;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")

@@ -29,24 +29,24 @@ public class DisciplineController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DisciplineDto> getStudentById(@PathVariable UUID id) {
+    public ResponseEntity<DisciplineDto> getDisciplineById(@PathVariable UUID id) {
         return ResponseEntity.ok(disciplineMapper.disciplineToDto(disciplineService.getDisciplineById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<DisciplineDto> addStudent(@RequestBody @Validated(Creation.class) DisciplineDto disciplineDto) {
+    public ResponseEntity<DisciplineDto> addDiscipline(@RequestBody @Validated(Creation.class) DisciplineDto disciplineDto) {
         return ResponseEntity.ok(disciplineMapper.disciplineToDto(
-                disciplineService.addSDiscipline(disciplineMapper.dtoToDiscipline(disciplineDto))));
+                disciplineService.addDiscipline(disciplineMapper.dtoToDiscipline(disciplineDto))));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> removeStudent(@PathVariable UUID id) {
+    public ResponseEntity<?> removeDiscipline(@PathVariable UUID id) {
         disciplineService.removeDiscipline(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<DisciplineDto> updateStudent(@RequestBody @Validated(Update.class) DisciplineDto disciplineDto) {
+    public ResponseEntity<DisciplineDto> updateDiscipline(@RequestBody @Validated(Update.class) DisciplineDto disciplineDto) {
         return ResponseEntity.ok(disciplineMapper.disciplineToDto(
                 disciplineService.updateDiscipline(disciplineMapper.dtoToDiscipline(disciplineDto))));
     }

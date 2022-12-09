@@ -26,7 +26,7 @@ public class DisciplineService {
     }
 
 
-    public Discipline addSDiscipline(Discipline newDiscipline) {
+    public Discipline addDiscipline(Discipline newDiscipline) {
         return disciplineRepository.save(newDiscipline);
     }
 

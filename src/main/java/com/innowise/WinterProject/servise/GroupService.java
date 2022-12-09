@@ -18,6 +18,8 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
 
+    private final StudentService studentService;
+
     public List<Group> getAllGroups() {
         return groupRepository.findAll();
     }
@@ -30,7 +32,7 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-    public void removeGroup(UUID id) {      //надо ли вместе с группой удалять всех студентов?
+    public void removeGroup(UUID id) {      //валидация на наличие студентов в группе
         groupRepository.deleteById(id);
     }
 
@@ -39,14 +41,14 @@ public class GroupService {
                 getGroupById(groupAfterChanges.getId()), groupAfterChanges));
     }
 
-    public void increaseNumberOfStudentsInGroup(UUID id) {
-        Group group = getGroupById(id);
+    public void increaseNumberOfStudentsInGroup(Group group) {
         group.setNumberOfStudents(group.getNumberOfStudents() + 1);
+        groupRepository.save(group);
     }
 
-    public void decreaseNumberOfStudentsInGroup(UUID id) {
-        Group group = getGroupById(id);
+    public void decreaseNumberOfStudentsInGroup(Group group) {
         group.setNumberOfStudents(group.getNumberOfStudents() - 1);
+        groupRepository.save(group);
     }
 
 }
