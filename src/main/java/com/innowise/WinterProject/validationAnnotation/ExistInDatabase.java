@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Documented
 @Constraint(validatedBy = IdExistValidator.class)
-@Target( { ElementType.METHOD, ElementType.FIELD })
+@Target( {ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExistInDatabase {
 

@@ -4,8 +4,10 @@ import com.innowise.WinterProject.dto.GroupDto;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.GroupMapper;
+import com.innowise.WinterProject.repository.GroupRepository;
 import com.innowise.WinterProject.servise.GroupService;
 import com.innowise.WinterProject.validationAnnotation.EmptyGroup;
+import com.innowise.WinterProject.validationAnnotation.ExistInDatabase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -41,7 +43,7 @@ public class GroupController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> removeGroup(@PathVariable @EmptyGroup UUID id) {
+    public ResponseEntity<?> removeGroup(@PathVariable @ExistInDatabase(repository = GroupRepository.class) @EmptyGroup UUID id) {
         groupService.removeGroup(id);
         return ResponseEntity.ok().build();
     }

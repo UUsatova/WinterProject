@@ -4,6 +4,7 @@ import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.Data;
 
 import java.util.UUID;
@@ -15,13 +16,14 @@ public class GroupDto {
     private UUID id;
 
 
-    @Min(value = 1,groups = {Creation.class, Update.class})
+    @Min(value = 1, groups = Creation.class)
     private int number;
 
-    @Min(value = 1,groups = {Creation.class, Update.class}) //надо запретить апдейтить,хотя я же нигде не ставила запрет
-    private int numberOfStudents;     //на апдейт айдишника хотя его нельзя апдейтить
+    @Null(groups = {Creation.class, Update.class})
+    @Min(value = 1, groups = {Creation.class, Update.class})
+    private int numberOfStudents;
 
-    @Min(value = 1,groups = {Creation.class, Update.class})
+    @Min(value = 1, groups = Creation.class)
     private int year;
 
 }

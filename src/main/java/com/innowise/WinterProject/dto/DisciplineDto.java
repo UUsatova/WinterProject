@@ -12,7 +12,7 @@ public class DisciplineDto {
     @NotNull(groups = Update.class)
     private UUID id;
 
-    @NotEmpty(groups = {Creation.class, Update.class})
-    @Size(max = 50,groups = {Creation.class, Update.class})
+    @NotEmpty(groups = Creation.class)
+    @Size(max = 50, groups = {Creation.class, Update.class})
     private String name;
 }
