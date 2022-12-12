@@ -15,12 +15,11 @@ public class GroupDto {
     @NotNull(groups = Update.class)
     private UUID id;
 
-
     @Min(value = 1, groups = Creation.class)
     private int number;
 
-    @Null(groups = {Creation.class, Update.class})
-    @Min(value = 1, groups = {Creation.class, Update.class})
+    @Null(groups = Update.class)
+    @Min(value = 1, groups = Creation.class)
     private int numberOfStudents;
 
     @Min(value = 1, groups = Creation.class)

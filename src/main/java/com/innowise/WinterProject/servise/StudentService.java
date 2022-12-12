@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class StudentService {
 
@@ -28,22 +29,20 @@ public class StudentService {
         return studentRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
     }
 
-    @Transactional
-    public Student addStudent(Student newStudent) { //вероятно надо увеличить колличество людей в группе
+
+    public Student addStudent(Student newStudent) {
         groupService.increaseNumberOfStudentsInGroup(newStudent.getGroup());
         return studentRepository.save(newStudent);
     }
 
-    @Transactional
-    public void removeStudent(UUID id) { //ероятно надо уменьшить колличество людей в группе
+
+    public void removeStudent(UUID id) {
         groupService.decreaseNumberOfStudentsInGroup(getStudentById(id).getGroup());
         studentRepository.deleteById(id);
     }
 
-    @Transactional
+
     public Student updateStudent(Student studentAfterChanges) {
-        //если меняется номер группы то где-то надо отнять,
-        // а где-то прибавить
         Student studentBeforeChanges = getStudentById(studentAfterChanges.getId());
         Group groupBeforeChanges = studentBeforeChanges.getGroup();
         Group groupAfterChanges = studentAfterChanges.getGroup();
