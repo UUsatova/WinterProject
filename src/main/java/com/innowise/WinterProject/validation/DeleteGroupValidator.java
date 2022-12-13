@@ -13,18 +13,9 @@ public class DeleteGroupValidator implements
         ConstraintValidator<EmptyGroup, UUID> {
     private GroupRepository groupRepository;
 
-//    @Override
-//    public boolean isValid(UUID id, ConstraintValidatorContext context) {
-//          return groupRepository.existsByIdAndNumberOfStudents(id,groupRepository.findById(id).get().getNumberOfStudents());
-//    }
-
-// метод который мы написали проверяет существование группы с таким айдишником и таким кол. студентов
-// а мне надо чтобы в группе с таким айдишником студентов было 0 студентов,тогда можно удалять
-
     @Override
     public boolean isValid(UUID id, ConstraintValidatorContext context) {
-        return groupRepository.findById(id).get().getNumberOfStudents() == 0;
+          return groupRepository.existsByIdAndNumberOfStudents(id,0);
     }
-
 
 }
