@@ -1,4 +1,4 @@
-package com.innowise.WinterProject.servise;
+package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.entity.Schedule;
 import com.innowise.WinterProject.exeption.WrongIdException;

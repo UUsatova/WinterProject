@@ -17,9 +17,9 @@ import java.util.UUID;
 @Data 
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDto {
+public class StudentDto { //extends UserDto
 
-    @ExistInDatabase(repository = StudentRepository.class, groups = Update.class)
+    @ExistInDatabase(repository = StudentRepository.class, groups = {Update.class,Creation.class})
     private UUID id;
 
     @Valid

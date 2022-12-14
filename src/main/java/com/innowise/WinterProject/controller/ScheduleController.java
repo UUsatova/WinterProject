@@ -4,7 +4,7 @@ import com.innowise.WinterProject.dto.ScheduleDto;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.ScheduleMapper;
-import com.innowise.WinterProject.servise.ScheduleService;
+import com.innowise.WinterProject.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

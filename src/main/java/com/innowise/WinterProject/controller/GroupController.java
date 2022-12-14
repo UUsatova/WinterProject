@@ -5,7 +5,7 @@ import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.GroupMapper;
 import com.innowise.WinterProject.repository.GroupRepository;
-import com.innowise.WinterProject.servise.GroupService;
+import com.innowise.WinterProject.service.GroupService;
 import com.innowise.WinterProject.validationAnnotation.EmptyGroup;
 import com.innowise.WinterProject.validationAnnotation.ExistInDatabase;
 import lombok.RequiredArgsConstructor;

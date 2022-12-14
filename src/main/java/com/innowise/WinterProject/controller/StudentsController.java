@@ -4,7 +4,7 @@ import com.innowise.WinterProject.dto.StudentDto;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.StudentMapper;
-import com.innowise.WinterProject.servise.StudentService;
+import com.innowise.WinterProject.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,12 +34,13 @@ public class StudentsController {
         return ResponseEntity.ok(studentMapper.studentToDto(studentService.getStudentById(id)));
     }
 
+    //может вызывать только администратор
     @PostMapping
     public ResponseEntity<StudentDto> addStudent(@RequestBody @Validated(Creation.class) StudentDto newStudent) {
         return ResponseEntity.ok(studentMapper.studentToDto(
                 studentService.addStudent(studentMapper.dtoToStudent(newStudent))));
     }
-
+    //может вызывать только администратор
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> removeStudent(@PathVariable UUID id) {
         studentService.removeStudent(id);

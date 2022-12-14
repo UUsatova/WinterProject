@@ -4,7 +4,7 @@ import com.innowise.WinterProject.dto.DisciplineDto;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.DisciplineMapper;
-import com.innowise.WinterProject.servise.DisciplineService;
+import com.innowise.WinterProject.service.DisciplineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

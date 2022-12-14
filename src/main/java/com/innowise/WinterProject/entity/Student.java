@@ -14,11 +14,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "students")
-public class Student {
+@PrimaryKeyJoinColumn(name = "id")
+public class Student extends User {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)

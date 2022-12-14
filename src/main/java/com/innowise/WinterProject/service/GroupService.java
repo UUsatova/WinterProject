@@ -1,4 +1,4 @@
-package com.innowise.WinterProject.servise;
+package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.entity.Group;
 import com.innowise.WinterProject.exeption.WrongIdException;
@@ -17,8 +17,6 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
-
-    private final StudentService studentService;
 
     public List<Group> getAllGroups() {
         return groupRepository.findAll();

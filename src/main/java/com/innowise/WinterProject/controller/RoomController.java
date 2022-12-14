@@ -4,7 +4,7 @@ import com.innowise.WinterProject.dto.RoomDto;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.RoomMapper;
-import com.innowise.WinterProject.servise.RoomService;
+import com.innowise.WinterProject.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

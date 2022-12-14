@@ -10,15 +10,18 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class TeacherDto { //extends  UserDto
+public class UserAuthDto {
 
-    @NotNull(groups = {Update.class,Creation.class})
+    @NotNull(groups = Creation.class)
     private UUID id;
 
+
     @NotEmpty(groups = Creation.class)
     @Size(max = 30, groups = {Creation.class, Update.class})
-    private String firstName;
+    private String login;
+
     @NotEmpty(groups = Creation.class)
     @Size(max = 30, groups = {Creation.class, Update.class})
-    private String lastName;
+    private String password;
+
 }

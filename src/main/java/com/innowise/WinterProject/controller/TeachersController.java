@@ -4,7 +4,7 @@ import com.innowise.WinterProject.dto.TeacherDto;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.TeacherMapper;
-import com.innowise.WinterProject.servise.TeacherService;
+import com.innowise.WinterProject.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
