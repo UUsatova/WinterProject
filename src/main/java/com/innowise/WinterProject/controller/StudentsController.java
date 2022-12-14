@@ -1,38 +1,55 @@
 package com.innowise.WinterProject.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.innowise.WinterProject.dto.StudentDto;
+import com.innowise.WinterProject.group.Creation;
+import com.innowise.WinterProject.group.Update;
+import com.innowise.WinterProject.mapper.StudentMapper;
+import com.innowise.WinterProject.servise.StudentService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/students")
 public class StudentsController {
 
+    private final StudentService studentService;
+    private final StudentMapper studentMapper;
+
+
     @GetMapping
-    public String getStudents() { //List<Student>
-
-        return "tipa smat studentov";
+    public ResponseEntity<List<StudentDto>> getStudents() {
+        return ResponseEntity.ok(studentService.getAllStudents()
+                .stream().map(studentMapper::studentToDto)
+                .toList());
     }
 
-    ///как доставать студента? По id по имени полному не полному,
     @GetMapping(value = "/{id}")
-    public String getStudentById(@PathVariable("id") String id){
-
-        return "";
+    public ResponseEntity<StudentDto> getStudentById(@PathVariable UUID id) {
+        return ResponseEntity.ok(studentMapper.studentToDto(studentService.getStudentById(id)));
     }
 
-    public String getStudentByName(){
-        return "";
-    }
-    ////
-
-    public void addStudent(){
-
+    @PostMapping
+    public ResponseEntity<StudentDto> addStudent(@RequestBody @Validated(Creation.class) StudentDto newStudent) {
+        return ResponseEntity.ok(studentMapper.studentToDto(
+                studentService.addStudent(studentMapper.dtoToStudent(newStudent))));
     }
 
-    public void editStudent(){}
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> removeStudent(@PathVariable UUID id) {
+        studentService.removeStudent(id);
+        return ResponseEntity.ok().build();
+    }
 
-
-
+    @PutMapping
+    public ResponseEntity<StudentDto> updateStudent(@RequestBody @Validated(Update.class) StudentDto studentDto) {
+        return ResponseEntity.ok(studentMapper.studentToDto(
+                studentService.updateStudent(studentMapper.dtoToStudent(studentDto))));
+    }
 }
+

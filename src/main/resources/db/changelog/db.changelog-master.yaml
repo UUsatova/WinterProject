@@ -1,5 +1,5 @@
 databaseChangeLog: #параметр в котором находятся миграции
   - include: # список активных миграций
-      file: db/changelog/changeset/
+      file: db/changelog/version/v1/init.changelogV1.yaml
   - include: # список активных миграций
-      file: db/changelog/changeset/
+      file: db/changelog/version/v2/init.changelogV2.yaml
