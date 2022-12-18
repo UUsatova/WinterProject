@@ -36,6 +36,6 @@ public class RoomService {
 
     public Room updateRoom(Room roomAfterChanges) {
         return roomRepository.save(roomMapper.updateRoom(
-                getRoomById(roomAfterChanges.getId()), roomAfterChanges));
+                roomAfterChanges,getRoomById(roomAfterChanges.getId())));
     }
 }

@@ -13,6 +13,6 @@ public interface StudentMapper {
     Student dtoToStudent(StudentDto studentDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Student updateStudent(Student studentBeforeChanges, @MappingTarget Student studentAfterChanges);
+    Student updateStudent(Student studentAfterChanges, @MappingTarget Student studentBeforeChanges );
 
 }

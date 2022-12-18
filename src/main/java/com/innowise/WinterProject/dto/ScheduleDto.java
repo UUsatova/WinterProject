@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,32 +20,39 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ScheduleDto {
 
+    @Valid
     @ExistInDatabase(repository = StudentRepository.class, groups = Update.class)
     private UUID id;
 
     @Valid
     @NotNull(groups = Creation.class)
-    private GroupDto groupDto;
+    private UUID groupId;
 
     @Valid
     @NotNull(groups = Creation.class)
-    private RoomDto roomDto;
+    private UUID roomId;
 
     @Valid
     @NotNull(groups = Creation.class)
-    private TeacherDto teacherDto;
+    private UUID teacherId;
 
     @Valid
     @NotNull(groups = Creation.class)
-    private DisciplineDto disciplineDto;
+    private UUID disciplineId;
 
+    @Valid
     @NotNull(groups = Creation.class)
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
+    @Valid
     @NotNull(groups = Creation.class)
+    @DateTimeFormat(iso=DateTimeFormat.ISO.TIME)
     private LocalTime startTime;
 
+    @Valid
     @NotNull(groups = Creation.class)
+    @DateTimeFormat(iso=DateTimeFormat.ISO.TIME)
     private LocalTime endTime;
 
 

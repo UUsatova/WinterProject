@@ -7,7 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 public enum Role implements GrantedAuthority {
 
     STUDENT("STUDENT"),
-    TEACHER("TEACHER");
+    TEACHER("TEACHER"),
+    ADMIN("ADMIN");
 
     private final String value;
     @Override

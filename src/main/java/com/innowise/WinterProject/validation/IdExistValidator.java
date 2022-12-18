@@ -14,7 +14,7 @@ public class IdExistValidator implements
         ConstraintValidator<ExistInDatabase, UUID> {
 
 
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
     private JpaRepository<Object, UUID> repository;
 
     @Override

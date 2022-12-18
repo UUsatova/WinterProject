@@ -2,8 +2,7 @@ package com.innowise.WinterProject.security;
 
 
 import com.innowise.WinterProject.entity.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
@@ -26,19 +25,28 @@ public class JwtProvider {
                 .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(jwtAccessSecret)
                 .claim("login", user.getLogin())
-                .claim("role", user.getRole())
+                .claim("role", user.getRole().getAuthority())
                 .compact();
     }
 
     public boolean validateAccessToken(@NonNull String accessToken) {
+        String exeption;
         try {
             Jwts.parserBuilder()
                     .setSigningKey(jwtAccessSecret)
                     .build()
                     .parseClaimsJws(accessToken);
             return true;
+        } catch (ExpiredJwtException expEx) {
+            exeption = "Token expired";
+        } catch (UnsupportedJwtException unsEx) {
+            exeption = "Unsupported jwt";
+        } catch (MalformedJwtException mjEx) {
+            exeption = "Malformed jwt";
+        } catch (SignatureException sEx) {
+            exeption = "Invalid signature";
         } catch (Exception e) {
-            //тут кстати было логирование тысячи и одного эксепшена мне тоже так сделать?
+            exeption = "invalid token";
         }
         return false;
     }

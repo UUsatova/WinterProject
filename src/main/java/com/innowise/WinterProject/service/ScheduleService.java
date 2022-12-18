@@ -1,6 +1,7 @@
 package com.innowise.WinterProject.service;
 
-import com.innowise.WinterProject.entity.Schedule;
+import com.innowise.WinterProject.dto.ScheduleDto;
+import com.innowise.WinterProject.entity.*;
 import com.innowise.WinterProject.exeption.WrongIdException;
 import com.innowise.WinterProject.mapper.ScheduleMapper;
 import com.innowise.WinterProject.repository.ScheduleRepository;
@@ -18,6 +19,10 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final ScheduleMapper scheduleMapper;
+    private final GroupService groupService;
+    private final  RoomService roomService;
+    private final DisciplineService disciplineService;
+    private  final  TeacherService teacherService;
 
     public List<Schedule> getAllSchedule() {
         return scheduleRepository.findAll();
@@ -27,8 +32,19 @@ public class ScheduleService {
         return scheduleRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
     }
 
-    public Schedule addSchedule(Schedule newSchedule) {
-        return scheduleRepository.save(newSchedule);
+    public Schedule addSchedule(ScheduleDto scheduleDto) {
+        Group group = groupService.getGroupById(scheduleDto.getGroupId());
+        Room room =roomService.getRoomById( scheduleDto.getRoomId());
+        Discipline discipline = disciplineService.getDisciplineById( scheduleDto.getDisciplineId());
+        Teacher teacher = teacherService.getTeacherById( scheduleDto.getTeacherId());
+
+        Schedule schedule = scheduleMapper.dtoToSchedule(scheduleDto);
+        schedule.setGroup(group);
+        schedule.setRoom(room);
+        schedule.setDiscipline(discipline);
+        schedule.setTeacher(teacher);
+
+        return scheduleRepository.save(schedule);
     }
 
     public void removeSchedule(UUID id) {
@@ -37,6 +53,10 @@ public class ScheduleService {
 
     public Schedule updateSchedule(Schedule scheduleAfterChanges) {
         Schedule scheduleBeforeChanges = getScheduleById(scheduleAfterChanges.getId());
-        return scheduleRepository.save(scheduleMapper.updateSchedule(scheduleBeforeChanges, scheduleAfterChanges));
+        return scheduleRepository.save(scheduleMapper.updateSchedule(scheduleAfterChanges,scheduleBeforeChanges ));
+    }
+
+    public void removeAll(){
+        getAllSchedule().forEach(item->removeSchedule(item.getId()));
     }
 }

@@ -15,6 +15,6 @@ public interface TeacherMapper {
     TeacherDto teacherToDto(Teacher teacher);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Teacher updateTeacher(Teacher teacherBeforeChanges,@MappingTarget Teacher teacherAfterChanges);
+    Teacher updateTeacher(Teacher teacherAfterChanges,@MappingTarget Teacher teacherBeforeChanges );
 
 }

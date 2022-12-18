@@ -7,6 +7,7 @@ import com.innowise.WinterProject.mapper.RoomMapper;
 import com.innowise.WinterProject.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,6 @@ import java.util.UUID;
 public class RoomController {
     private final RoomService roomService;
     private final RoomMapper roomMapper;
-
 
     @GetMapping
     public ResponseEntity<List<RoomDto>> getRoom() {
@@ -34,18 +34,21 @@ public class RoomController {
     }
 
     @PostMapping
-    public ResponseEntity<RoomDto> addRoom(@RequestBody @Validated(Creation.class) RoomDto roomDto) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<RoomDto> addRoom(@RequestBody @Validated(Creation.class) RoomDto roomDto) {//
         return ResponseEntity.ok(roomMapper.roomToDto(
                 roomService.addRoom(roomMapper.dtoToRoom(roomDto))));
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> removeRoom(@PathVariable UUID id) {
         roomService.removeRoom(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<RoomDto> updateRoom(@RequestBody @Validated(Update.class) RoomDto roomDto) {
         return ResponseEntity.ok(roomMapper.roomToDto(
                 roomService.updateRoom(roomMapper.dtoToRoom(roomDto))));

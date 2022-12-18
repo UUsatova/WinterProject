@@ -14,7 +14,8 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     public String login(User userBeforeAuth) throws AuthException { // кидать свое исключние
-        final User user = userService.getByLogin(userBeforeAuth.getLogin());
+        String str = userBeforeAuth.getLogin();
+        final User user = userService.getByLogin(str);
         if (user.getPassword().equals(userBeforeAuth.getPassword())) {
             return jwtProvider.generateAccessToken(user);
         } else {

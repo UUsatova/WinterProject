@@ -36,7 +36,7 @@ public class GroupService {
 
     public Group updateGroup(Group groupAfterChanges) {      //точно так же смотря что апдейтим верноятно нужны изменения
         return groupRepository.save(groupMapper.updateGroup( //можно ли запретить апдейтить колличество людей в группе
-                getGroupById(groupAfterChanges.getId()), groupAfterChanges));
+                 groupAfterChanges,getGroupById(groupAfterChanges.getId())));
     }
 
     public void increaseNumberOfStudentsInGroup(Group group) {

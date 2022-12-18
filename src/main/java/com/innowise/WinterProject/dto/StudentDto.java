@@ -17,14 +17,14 @@ import java.util.UUID;
 @Data 
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDto { //extends UserDto
+public class StudentDto {
 
-    @ExistInDatabase(repository = StudentRepository.class, groups = {Update.class,Creation.class})
+    @ExistInDatabase(repository = StudentRepository.class, groups = Update.class)
     private UUID id;
 
     @Valid
     @NotNull(groups = Creation.class)
-    private GroupDto group;
+    private UUID groupId;
     @NotEmpty(groups = Creation.class)
     @Size(max = 30, groups = {Creation.class, Update.class})
     private String firstName;
@@ -32,5 +32,9 @@ public class StudentDto { //extends UserDto
     @NotEmpty(groups = Creation.class)
     @Size(max = 30, groups = {Creation.class, Update.class})
     private String lastName;
+
+    @Valid
+    @NotNull(groups = Creation.class)
+    private UserDto userDto;
 
 }

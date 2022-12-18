@@ -15,10 +15,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "teachers")
 @PrimaryKeyJoinColumn(name = "id")
-public class Teacher extends User {
+public class Teacher {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "first_name")

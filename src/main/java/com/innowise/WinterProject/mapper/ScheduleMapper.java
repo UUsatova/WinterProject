@@ -14,6 +14,6 @@ public interface ScheduleMapper {
     ScheduleDto scheduleToDto(Schedule schedule);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Schedule updateSchedule(Schedule scheduleBeforeChanges, @MappingTarget Schedule scheduleAfterChanges);
+    Schedule updateSchedule(Schedule scheduleAfterChanges , @MappingTarget Schedule scheduleBeforeChanges);
 
 }

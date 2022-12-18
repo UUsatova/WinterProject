@@ -1,5 +1,6 @@
 package com.innowise.WinterProject.dto;
 
+import com.innowise.WinterProject.entity.Role;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,11 +11,10 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class UserAuthDto {
+public class UserDto {
 
-    @NotNull(groups = Creation.class)
+    @NotNull(groups = Update.class) //    @ExistInDatabase(repository = StudentRepository.class, groups = Update.class)
     private UUID id;
-
 
     @NotEmpty(groups = Creation.class)
     @Size(max = 30, groups = {Creation.class, Update.class})
@@ -23,5 +23,8 @@ public class UserAuthDto {
     @NotEmpty(groups = Creation.class)
     @Size(max = 30, groups = {Creation.class, Update.class})
     private String password;
+
+    @NotNull(groups = Creation.class)
+    private Role role;
 
 }

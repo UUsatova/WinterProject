@@ -14,15 +14,13 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    // вообще они ж должны совпадать с колонками в других таблиицах так что генерить надо в одном месте,
-    // я предполагаю что тут а там просто присваивать,правильно?
-    //так что в юзере и учителе я выкинула генерацию
     private UUID id;
     @Column(name = "login")
     private String login;
@@ -30,7 +28,15 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "roles")
-    private Role role; //создать таблицу ролей
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(name = "teacher_id")
+    private UUID teacherId;
+
+    @Column(name = "student_id")
+    private UUID studentId;
+
 
 }

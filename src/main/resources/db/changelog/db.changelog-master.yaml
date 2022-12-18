@@ -3,3 +3,7 @@ databaseChangeLog: #параметр в котором находятся миг
       file: db/changelog/version/v1/init.changelogV1.yaml
   - include: # список активных миграций
       file: db/changelog/version/v2/init.changelogV2.yaml
+  - include: # список активных миграций
+      file: db/changelog/version/v3/init.changelogV3.yaml
+  - include: # список активных миграций
+      file: db/changelog/version/v4/init.changelogV4.yaml

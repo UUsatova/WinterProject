@@ -7,6 +7,7 @@ import com.innowise.WinterProject.mapper.DisciplineMapper;
 import com.innowise.WinterProject.service.DisciplineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,18 +35,21 @@ public class DisciplineController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<DisciplineDto> addDiscipline(@RequestBody @Validated(Creation.class) DisciplineDto disciplineDto) {
         return ResponseEntity.ok(disciplineMapper.disciplineToDto(
                 disciplineService.addDiscipline(disciplineMapper.dtoToDiscipline(disciplineDto))));
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> removeDiscipline(@PathVariable UUID id) {
         disciplineService.removeDiscipline(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<DisciplineDto> updateDiscipline(@RequestBody @Validated(Update.class) DisciplineDto disciplineDto) {
         return ResponseEntity.ok(disciplineMapper.disciplineToDto(
                 disciplineService.updateDiscipline(disciplineMapper.dtoToDiscipline(disciplineDto))));

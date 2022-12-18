@@ -14,9 +14,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -29,6 +29,7 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain fc)
             throws IOException, ServletException {
         final String token = getTokenFromRequest((HttpServletRequest) request);
+       // boolean one = jwtProvider.validateAccessToken(token);
         if (token != null && jwtProvider.validateAccessToken(token)) {
             final Claims claims = jwtProvider.getAccessClaims(token);
 
@@ -56,9 +57,7 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     private static Set<Role> getRoles(Claims claims) {
-        final List<String> roles = claims.get("roles", List.class);
-        return roles.stream()
-                .map(Role::valueOf)
-                .collect(Collectors.toSet());
+        Set<Role> roles = new HashSet<>(Collections.singleton(Role.valueOf(claims.get("role", String.class))));
+        return roles;
     }
 }

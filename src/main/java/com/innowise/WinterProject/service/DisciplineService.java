@@ -36,6 +36,6 @@ public class DisciplineService {
 
     public Discipline updateDiscipline(Discipline disciplineAfterChanges) {
         return disciplineRepository.save(disciplineMapper.updateDiscipline(
-                getDisciplineById(disciplineAfterChanges.getId()), disciplineAfterChanges));
+                disciplineAfterChanges,getDisciplineById(disciplineAfterChanges.getId())));
     }
 }

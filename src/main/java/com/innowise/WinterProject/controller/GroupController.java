@@ -10,6 +10,7 @@ import com.innowise.WinterProject.validationAnnotation.EmptyGroup;
 import com.innowise.WinterProject.validationAnnotation.ExistInDatabase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,18 +38,21 @@ public class GroupController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GroupDto> addGroup(@RequestBody @Validated(Creation.class) GroupDto newGroup) {
         return ResponseEntity.ok(groupMapper.groupToDto(
                 groupService.addGroup(groupMapper.dtoToGroup(newGroup))));
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> removeGroup(@PathVariable @ExistInDatabase(repository = GroupRepository.class) @EmptyGroup UUID id) {
         groupService.removeGroup(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<GroupDto> updateGroup(@RequestBody @Validated(Update.class) GroupDto groupDto) {
         return ResponseEntity.ok(groupMapper.groupToDto(
                 groupService.updateGroup(groupMapper.dtoToGroup(groupDto))));
