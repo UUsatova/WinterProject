@@ -1,7 +1,7 @@
 package com.innowise.WinterProject.validation;
 
 import com.innowise.WinterProject.repository.GroupRepository;
-import com.innowise.WinterProject.validationAnnotation.EmptyGroup;
+import com.innowise.WinterProject.validation.annotation.EmptyGroup;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

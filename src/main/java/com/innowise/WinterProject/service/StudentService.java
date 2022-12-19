@@ -9,6 +9,7 @@ import com.innowise.WinterProject.mapper.StudentMapper;
 import com.innowise.WinterProject.mapper.UserMapper;
 import com.innowise.WinterProject.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +25,9 @@ public class StudentService {
     private final StudentMapper studentMapper;
     private final GroupService groupService;
     private final UserService userService;
-
     private final UserMapper userMapper;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
@@ -38,6 +40,7 @@ public class StudentService {
 
     public Student createStudent(StudentDto newStudent) {
         User user = userMapper.dtoToUser(newStudent.getUserDto());
+        user.setPassword(bCryptPasswordEncoder.encode( user.getPassword()));
         Group group = groupService.getGroupById( newStudent.getGroupId());
         Student student = studentMapper.dtoToStudent(newStudent);
         student.setGroup(group);
@@ -54,8 +57,6 @@ public class StudentService {
 
     public void removeStudent(UUID id) {
         groupService.decreaseNumberOfStudentsInGroup(getStudentById(id).getGroup());
-
-        //возможно можно проще
         userService.removeUser(userService.getUserByStudentId(id).getId());
 
         studentRepository.deleteById(id);

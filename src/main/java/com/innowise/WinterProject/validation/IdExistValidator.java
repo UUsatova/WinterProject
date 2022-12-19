@@ -1,6 +1,6 @@
 package com.innowise.WinterProject.validation;
 
-import com.innowise.WinterProject.validationAnnotation.ExistInDatabase;
+import com.innowise.WinterProject.validation.annotation.ExistInDatabase;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

@@ -29,7 +29,6 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain fc)
             throws IOException, ServletException {
         final String token = getTokenFromRequest((HttpServletRequest) request);
-       // boolean one = jwtProvider.validateAccessToken(token);
         if (token != null && jwtProvider.validateAccessToken(token)) {
             final Claims claims = jwtProvider.getAccessClaims(token);
 

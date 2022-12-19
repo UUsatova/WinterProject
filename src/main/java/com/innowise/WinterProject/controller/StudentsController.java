@@ -54,12 +54,12 @@ public class StudentsController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')") //возможно дать менять параметры только у себя
-    public ResponseEntity<StudentDto> updateStudent(@RequestBody @Validated(Update.class) StudentDto studentDto) {//@Validated(Update.class)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<StudentDto> updateStudent(@RequestBody @Validated(Update.class) StudentDto studentDto) {
         Student student = studentMapper.dtoToStudent(studentDto);
         studentService.updateStudent(student);
         return ResponseEntity.ok(studentMapper.studentToDto(
                 studentService.updateStudent(student)));
-    }//+сделать норм апдейт
+    }
 }
 

@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class GroupDto {
 
-    @NotNull(groups = Update.class) //    @ExistInDatabase(repository = StudentRepository.class, groups = Update.class)
+    @NotNull(groups = Update.class)
     private UUID id;
 
     @Min(value = 1, groups = Creation.class)

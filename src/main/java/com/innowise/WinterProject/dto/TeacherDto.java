@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TeacherDto {
 
-    @NotNull(groups = {Update.class}) //    @ExistInDatabase(repository = StudentRepository.class, groups = Update.class)
+    @NotNull(groups = {Update.class})
     private UUID id;
 
     @NotEmpty(groups = Creation.class)

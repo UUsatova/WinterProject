@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
-    private final UserMapper userAuthMapper; //мультипартформ
+    private final UserMapper userAuthMapper;
 
-    //все пользователи
     @PostMapping
-    public ResponseEntity<String> login(@RequestBody UserDto userAuthDto) throws AuthException { //убрать
+    public ResponseEntity<String> login(@RequestBody UserDto userAuthDto) throws AuthException {
         User user =  userAuthMapper.dtoToUser(userAuthDto);
         String token = authService.login(user);
         return ResponseEntity.ok(token);

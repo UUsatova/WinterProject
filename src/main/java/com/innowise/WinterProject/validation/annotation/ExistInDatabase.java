@@ -1,4 +1,4 @@
-package com.innowise.WinterProject.validationAnnotation;
+package com.innowise.WinterProject.validation.annotation;
 
 import com.innowise.WinterProject.validation.IdExistValidator;
 import jakarta.validation.Constraint;

@@ -34,8 +34,8 @@ public class GroupService {
         groupRepository.deleteById(id);
     }
 
-    public Group updateGroup(Group groupAfterChanges) {      //точно так же смотря что апдейтим верноятно нужны изменения
-        return groupRepository.save(groupMapper.updateGroup( //можно ли запретить апдейтить колличество людей в группе
+    public Group updateGroup(Group groupAfterChanges) {
+        return groupRepository.save(groupMapper.updateGroup(
                  groupAfterChanges,getGroupById(groupAfterChanges.getId())));
     }
 

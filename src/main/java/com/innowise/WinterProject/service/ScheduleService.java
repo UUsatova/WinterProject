@@ -24,11 +24,13 @@ public class ScheduleService {
     private final DisciplineService disciplineService;
     private  final  TeacherService teacherService;
 
+
     public List<Schedule> getAllSchedule() {
         return scheduleRepository.findAll();
     }
 
     public Schedule getScheduleById(UUID id) {
+        Schedule schedule = scheduleRepository.findById(id).get();
         return scheduleRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
     }
 

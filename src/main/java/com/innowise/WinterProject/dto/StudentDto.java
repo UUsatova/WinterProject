@@ -3,7 +3,7 @@ package com.innowise.WinterProject.dto;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.repository.StudentRepository;
-import com.innowise.WinterProject.validationAnnotation.ExistInDatabase;
+import com.innowise.WinterProject.validation.annotation.ExistInDatabase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

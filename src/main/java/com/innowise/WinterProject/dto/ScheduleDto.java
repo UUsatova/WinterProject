@@ -2,8 +2,8 @@ package com.innowise.WinterProject.dto;
 
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
-import com.innowise.WinterProject.repository.StudentRepository;
-import com.innowise.WinterProject.validationAnnotation.ExistInDatabase;
+import com.innowise.WinterProject.repository.ScheduleRepository;
+import com.innowise.WinterProject.validation.annotation.ExistInDatabase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ScheduleDto {
 
     @Valid
-    @ExistInDatabase(repository = StudentRepository.class, groups = Update.class)
+    @ExistInDatabase(repository = ScheduleRepository.class, groups = Update.class)
     private UUID id;
 
     @Valid
@@ -57,3 +57,4 @@ public class ScheduleDto {
 
 
 }
+

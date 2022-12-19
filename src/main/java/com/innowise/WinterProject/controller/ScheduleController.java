@@ -1,6 +1,7 @@
 package com.innowise.WinterProject.controller;
 
 import com.innowise.WinterProject.dto.ScheduleDto;
+import com.innowise.WinterProject.entity.Schedule;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.ScheduleMapper;
@@ -30,8 +31,9 @@ public class ScheduleController {
     }
 
 
-    @GetMapping(value = "/{id}") //сделать норм возврат
+    @GetMapping(value = "/{id}")
     public ResponseEntity<ScheduleDto> getScheduleById(@PathVariable UUID id) {
+        Schedule schedule = scheduleService.getScheduleById(id);
         return ResponseEntity.ok(scheduleMapper.scheduleToDto(scheduleService.getScheduleById(id)));
     }
 
@@ -49,11 +51,10 @@ public class ScheduleController {
         return ResponseEntity.ok().build();
     }
 
-    //только администратор
-    //почему-то проваливается валидация без понятия почему
     @PutMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ScheduleDto> updateSchedule(@RequestBody @Validated(Update.class) ScheduleDto scheduleDto) { //@Validated(Update.class)
+    public ResponseEntity<ScheduleDto> updateSchedule(@RequestBody @Validated(Update.class) ScheduleDto scheduleDto) {
+
         return ResponseEntity.ok(scheduleMapper.scheduleToDto(
                 scheduleService.updateSchedule(scheduleMapper.dtoToSchedule(scheduleDto))));
     } //+сделать норм апдейт
@@ -68,10 +69,6 @@ public class ScheduleController {
 
 
 /*
-student  сделать нормальный вывод дто в апдейте и креате
-            кастомизировать аптейт (дать разрешение что-тот менять студенту)
+student  кастомизировать аптейт (дать разрешение что-тот менять студенту)
 teacher кастомизировать аптейт (дать разрешение что-тот менять)
-schedule починиить апдейт
-         сделатьб нормальный вывод дто в апдейте и креате
-Сделатьтт проверку на уникальность логина,а то ошибка
- */
+*/

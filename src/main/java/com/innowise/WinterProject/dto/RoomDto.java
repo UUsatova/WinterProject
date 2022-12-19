@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RoomDto {
 
-    @NotNull(groups = Update.class)    // @ExistInDatabase(repository = StudentRepository.class, groups = Update.class)
+    @NotNull(groups = Update.class)
     private UUID id;
 
     @Positive( groups = Creation.class)
