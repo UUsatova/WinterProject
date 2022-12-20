@@ -10,14 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    //пароли захештровпны
-    private final BCryptPasswordEncoder bcryptEncoder;
     private final UserService userService;
     private final JwtProvider jwtProvider;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public String login(User userBeforeAuth) throws AuthException {
-        final User user = userService.getByLogin(userBeforeAuth.getLogin());
-        if (bcryptEncoder.matches(userBeforeAuth.getPassword(),user.getPassword())) {
+        String login = userBeforeAuth.getLogin();
+        User user = userService.getByLogin(login);
+        if (bCryptPasswordEncoder.matches(userBeforeAuth.getPassword(),user.getPassword())) {
+        //if (userBeforeAuth.getPassword().equals(user.getPassword())) {
             return jwtProvider.generateAccessToken(user);
         } else {
             throw new AuthException("Неправильный пароль");

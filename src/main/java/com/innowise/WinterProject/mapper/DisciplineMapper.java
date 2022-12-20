@@ -13,5 +13,5 @@ public interface DisciplineMapper {
     Discipline dtoToDiscipline(DisciplineDto disciplineDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Discipline updateDiscipline(Discipline disciplineAfterChanges, @MappingTarget Discipline disciplineBeforeChanges);
+    Discipline updateDiscipline(Discipline source, @MappingTarget Discipline target);
 }

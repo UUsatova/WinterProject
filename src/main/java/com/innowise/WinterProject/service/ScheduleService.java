@@ -2,7 +2,7 @@ package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.dto.ScheduleDto;
 import com.innowise.WinterProject.entity.*;
-import com.innowise.WinterProject.exeption.WrongIdException;
+import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import com.innowise.WinterProject.mapper.ScheduleMapper;
 import com.innowise.WinterProject.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ScheduleService {
 
     public Schedule getScheduleById(UUID id) {
         Schedule schedule = scheduleRepository.findById(id).get();
-        return scheduleRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
+        return scheduleRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
     }
 
     public Schedule addSchedule(ScheduleDto scheduleDto) {
@@ -56,9 +56,5 @@ public class ScheduleService {
     public Schedule updateSchedule(Schedule scheduleAfterChanges) {
         Schedule scheduleBeforeChanges = getScheduleById(scheduleAfterChanges.getId());
         return scheduleRepository.save(scheduleMapper.updateSchedule(scheduleAfterChanges,scheduleBeforeChanges ));
-    }
-
-    public void removeAll(){
-        getAllSchedule().forEach(item->removeSchedule(item.getId()));
     }
 }

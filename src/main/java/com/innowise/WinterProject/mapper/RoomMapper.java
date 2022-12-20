@@ -13,6 +13,6 @@ public interface RoomMapper {
     Room dtoToRoom(RoomDto roomDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Room updateRoom(Room roomAfterChanges, @MappingTarget Room roomBeforeChanges);
+    Room updateRoom(Room source, @MappingTarget Room target);
 
 }

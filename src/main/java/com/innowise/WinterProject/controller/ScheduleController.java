@@ -57,18 +57,5 @@ public class ScheduleController {
 
         return ResponseEntity.ok(scheduleMapper.scheduleToDto(
                 scheduleService.updateSchedule(scheduleMapper.dtoToSchedule(scheduleDto))));
-    } //+сделать норм апдейт
-
-    @DeleteMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> removeAllSchedule() {
-        scheduleService.removeAll();
-        return ResponseEntity.ok().build();
     }
 }
-
-
-/*
-student  кастомизировать аптейт (дать разрешение что-тот менять студенту)
-teacher кастомизировать аптейт (дать разрешение что-тот менять)
-*/

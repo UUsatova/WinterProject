@@ -2,10 +2,11 @@ package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.entity.Teacher;
 import com.innowise.WinterProject.entity.User;
-import com.innowise.WinterProject.exeption.WrongIdException;
+import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import com.innowise.WinterProject.mapper.TeacherMapper;
 import com.innowise.WinterProject.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +22,20 @@ public class TeacherService {
     private final UserService userService;
     public final TeacherMapper teacherMapper;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     public List<Teacher> getAllTeachers() {
         return teacherRepository.findAll();
     }
 
     public Teacher getTeacherById(UUID id) {
-        return teacherRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
+        return teacherRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
     }
 
     public Teacher createTeacher(Teacher teacher, User user) {
         Teacher addedTeacher = addTeacher(teacher);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setTeacherId(addedTeacher.getId());
         userService.addUser(user);
         return addedTeacher;

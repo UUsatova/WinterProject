@@ -1,6 +1,6 @@
 package com.innowise.WinterProject.exeptionHandler;
 
-import com.innowise.WinterProject.exeption.WrongIdException;
+import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ResponseExceptionHandler {
 
-    @ExceptionHandler(value = WrongIdException.class)
+    @ExceptionHandler(value = ItemNotFoundException.class)
     public ResponseEntity<Object> handleWrongIdException(
-            WrongIdException ex) {
+            ItemNotFoundException ex) {
         return ResponseEntity.badRequest().build();
     }
 

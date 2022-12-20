@@ -18,8 +18,8 @@ public class UserDto {
     private UUID id;
 
     @NotEmpty(groups = Creation.class)
+    @UniqueLogin(groups = {Creation.class, Update.class})
     @Size(max = 30, groups = {Creation.class, Update.class})
-    @UniqueLogin(groups = Creation.class)
     private String login;
 
     @NotEmpty(groups = Creation.class)

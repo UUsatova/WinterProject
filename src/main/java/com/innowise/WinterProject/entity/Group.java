@@ -9,8 +9,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "groups")
 public class Group {
 

@@ -5,7 +5,6 @@ import com.innowise.WinterProject.entity.Student;
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
 import com.innowise.WinterProject.mapper.StudentMapper;
-import com.innowise.WinterProject.mapper.UserMapper;
 import com.innowise.WinterProject.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,6 @@ public class StudentsController {
 
     private final StudentService studentService;
     private final StudentMapper studentMapper;
-    private  final UserMapper userAuthMapper;
 
 
     @GetMapping

@@ -11,8 +11,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "schedule")
 public class Schedule {
 

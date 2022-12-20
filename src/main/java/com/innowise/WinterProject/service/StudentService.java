@@ -4,7 +4,7 @@ import com.innowise.WinterProject.dto.StudentDto;
 import com.innowise.WinterProject.entity.Group;
 import com.innowise.WinterProject.entity.Student;
 import com.innowise.WinterProject.entity.User;
-import com.innowise.WinterProject.exeption.WrongIdException;
+import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import com.innowise.WinterProject.mapper.StudentMapper;
 import com.innowise.WinterProject.mapper.UserMapper;
 import com.innowise.WinterProject.repository.StudentRepository;
@@ -34,7 +34,7 @@ public class StudentService {
     }
 
     public Student getStudentById(UUID id) {
-        return studentRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
+        return studentRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
     }
 
 

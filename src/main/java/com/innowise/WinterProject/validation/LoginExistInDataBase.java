@@ -13,6 +13,6 @@ public class LoginExistInDataBase implements ConstraintValidator<UniqueLogin, St
 
     @Override
     public boolean isValid(String login, ConstraintValidatorContext context) {
-        return repository.findByLogin(login).isPresent();
+        return repository.findByLogin(login).isEmpty();
     }
 }

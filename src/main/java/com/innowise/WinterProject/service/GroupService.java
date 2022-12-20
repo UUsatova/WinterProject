@@ -1,7 +1,7 @@
 package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.entity.Group;
-import com.innowise.WinterProject.exeption.WrongIdException;
+import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import com.innowise.WinterProject.mapper.GroupMapper;
 import com.innowise.WinterProject.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class GroupService {
     }
 
     public Group getGroupById(UUID id) {
-        return groupRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
+        return groupRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
     }
 
     public Group addGroup(Group group) {

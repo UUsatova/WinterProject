@@ -2,7 +2,11 @@ package com.innowise.WinterProject.mapper;
 
 import com.innowise.WinterProject.dto.StudentDto;
 import com.innowise.WinterProject.entity.Student;
-import org.mapstruct.*;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper
 public interface StudentMapper {
@@ -13,7 +17,7 @@ public interface StudentMapper {
    abstract public Student dtoToStudent(StudentDto studentDto);
 
    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-   abstract public Student updateStudent(Student studentAfterChanges, @MappingTarget Student studentBeforeChanges);
+   abstract public Student updateStudent(Student source, @MappingTarget Student target);
 
 
 }
