@@ -71,7 +71,7 @@ public class ScheduleController {
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content)})
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ScheduleDto> addSchedule(@RequestBody @Validated( Creation.class) ScheduleDto scheduleDto) {
         return ResponseEntity.ok(scheduleMapper.scheduleToDto(
                 scheduleService.addSchedule(scheduleDto)));
@@ -83,7 +83,7 @@ public class ScheduleController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> removeSchedule(@PathVariable UUID id) {
         scheduleService.removeSchedule(id);
         return ResponseEntity.ok().build();
@@ -99,7 +99,7 @@ public class ScheduleController {
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content)})
     @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ScheduleDto> updateSchedule(@RequestBody @Validated(Update.class) ScheduleDto scheduleDto) {
 
         return ResponseEntity.ok(scheduleMapper.scheduleToDto(

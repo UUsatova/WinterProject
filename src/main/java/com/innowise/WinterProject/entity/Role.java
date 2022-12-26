@@ -1,18 +1,17 @@
 package com.innowise.WinterProject.entity;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 
 @RequiredArgsConstructor
-public enum Role implements GrantedAuthority {
+public enum Role  {
 
-    STUDENT("STUDENT"),
-    TEACHER("TEACHER"),
-    ADMIN("ADMIN");
+    STUDENT("ROLE_STUDENT"),
+    TEACHER("ROLE_TEACHER"),
+    ADMIN("ROLE_ADMIN");
 
     private final String value;
-    @Override
-    public String getAuthority() {
+
+    public String getName() {
         return value;
     }
 

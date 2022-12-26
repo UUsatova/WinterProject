@@ -25,7 +25,7 @@ public class JwtProvider {
                 .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(jwtAccessSecret)
                 .claim("login", user.getLogin())
-                .claim("role", user.getRole().getAuthority())
+                .claim("role", user.getRole().toString())
                 .compact();
     }
 

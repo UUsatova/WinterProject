@@ -72,7 +72,7 @@ public class TeachersController {
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content)})
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<TeacherDto> addTeacher(@RequestBody @Validated(Creation.class) TeacherDto teacherDto) {
         Teacher teacher = teacherMapper.dtoToTeacher(teacherDto);
         User user = userAuthMapper.dtoToUser(teacherDto.getUserDto());
@@ -86,7 +86,7 @@ public class TeachersController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<?> removeTeacher(@Parameter(description = "teachars' id",example = "3fa85f64-5717-4562-b3fc-2c963f66afa6") @PathVariable UUID id) {
         teacherService.removeTeacher(id);
         return ResponseEntity.ok().build();
@@ -102,7 +102,7 @@ public class TeachersController {
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content)})
     @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<TeacherDto> updateTeacher(@RequestBody @Validated(Update.class) TeacherDto teacherDto) {
         return ResponseEntity.ok(teacherMapper.teacherToDto(
                 teacherService.updateTeacher(teacherMapper.dtoToTeacher(teacherDto))));

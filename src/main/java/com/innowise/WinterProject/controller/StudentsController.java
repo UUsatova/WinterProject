@@ -71,7 +71,7 @@ public class StudentsController {
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content)})
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StudentDto> createStudent(@RequestBody @Validated(Creation.class) StudentDto newStudent) {
         return ResponseEntity.ok(studentMapper.studentToDto(studentService.createStudent(newStudent)));
     }
@@ -82,7 +82,7 @@ public class StudentsController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> removeStudent(@PathVariable UUID id) {
         studentService.removeStudent(id);
         return ResponseEntity.ok().build();
@@ -98,7 +98,7 @@ public class StudentsController {
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content)})
     @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StudentDto> updateStudent(@RequestBody @Validated(Update.class) StudentDto studentDto) {
         Student student = studentMapper.dtoToStudent(studentDto);
         studentService.updateStudent(student);
