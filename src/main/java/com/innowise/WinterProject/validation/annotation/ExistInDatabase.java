@@ -1,10 +1,10 @@
 package com.innowise.WinterProject.validation.annotation;
 
 import com.innowise.WinterProject.validation.IdExistValidator;
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 import java.util.UUID;
 

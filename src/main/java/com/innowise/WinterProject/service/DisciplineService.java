@@ -22,7 +22,7 @@ public class DisciplineService {
     }
 
     public Discipline getDisciplineById(UUID id) {
-        return disciplineRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+        return disciplineRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, Discipline.class));
     }
 
 

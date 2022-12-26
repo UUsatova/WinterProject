@@ -1,11 +1,10 @@
 package com.innowise.WinterProject.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 
@@ -18,7 +17,11 @@ public class User {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
     @Column(name = "login")
     private String login;

@@ -30,7 +30,7 @@ public class TeacherService {
     }
 
     public Teacher getTeacherById(UUID id) {
-        return teacherRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+        return teacherRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, Teacher.class));
     }
 
     public Teacher createTeacher(Teacher teacher, User user) {

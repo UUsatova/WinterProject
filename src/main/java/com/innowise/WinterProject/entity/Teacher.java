@@ -1,21 +1,29 @@
 package com.innowise.WinterProject.entity;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "teachers")
-@PrimaryKeyJoinColumn(name = "id")
 public class Teacher {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     @Column(name = "first_name")

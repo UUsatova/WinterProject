@@ -2,11 +2,11 @@ package com.innowise.WinterProject.dto;
 
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.*;
 import java.util.UUID;
 
 @Data

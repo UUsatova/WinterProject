@@ -1,9 +1,9 @@
 package com.innowise.WinterProject.validation.annotation;
 
 import com.innowise.WinterProject.validation.DeleteGroupValidator;
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented

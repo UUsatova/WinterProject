@@ -22,7 +22,7 @@ public class RoomService {
     }
 
     public Room getRoomById(UUID id) {
-        return roomRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+        return roomRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, Room.class));
     }
 
 

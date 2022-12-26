@@ -1,8 +1,11 @@
 package com.innowise.WinterProject.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -14,7 +17,11 @@ public class Group {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     @Column(name = "number")

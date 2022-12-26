@@ -20,9 +20,9 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleMapper scheduleMapper;
     private final GroupService groupService;
-    private final  RoomService roomService;
+    private final RoomService roomService;
     private final DisciplineService disciplineService;
-    private  final  TeacherService teacherService;
+    private final TeacherService teacherService;
 
 
     public List<Schedule> getAllSchedule() {
@@ -31,7 +31,7 @@ public class ScheduleService {
 
     public Schedule getScheduleById(UUID id) {
         Schedule schedule = scheduleRepository.findById(id).get();
-        return scheduleRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+        return scheduleRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, ScheduleDto.class));
     }
 
     public Schedule addSchedule(ScheduleDto scheduleDto) {

@@ -1,9 +1,9 @@
 package com.innowise.WinterProject.validation.annotation;
 
 import com.innowise.WinterProject.validation.LoginExistInDataBase;
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueLogin {
 
-    String message() default "Change login please";
+    String message() default "User with this login already exists";
 
     Class<?>[] groups() default {};
 

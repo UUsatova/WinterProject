@@ -2,9 +2,10 @@ package com.innowise.WinterProject.validation;
 
 import com.innowise.WinterProject.repository.UserRepository;
 import com.innowise.WinterProject.validation.annotation.UniqueLogin;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 @RequiredArgsConstructor
 public class LoginExistInDataBase implements ConstraintValidator<UniqueLogin, String> {

@@ -34,7 +34,7 @@ public class StudentService {
     }
 
     public Student getStudentById(UUID id) {
-        return studentRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+        return studentRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, Student.class));
     }
 
 

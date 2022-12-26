@@ -2,13 +2,13 @@ package com.innowise.WinterProject.dto;
 
 import com.innowise.WinterProject.group.Creation;
 import com.innowise.WinterProject.group.Update;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.UUID;
 
 @Data

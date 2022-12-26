@@ -23,7 +23,7 @@ public class GroupService {
     }
 
     public Group getGroupById(UUID id) {
-        return groupRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
+        return groupRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, Group.class));
     }
 
     public Group addGroup(Group group) {

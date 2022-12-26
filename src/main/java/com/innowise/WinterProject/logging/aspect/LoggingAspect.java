@@ -1,43 +1,40 @@
 package com.innowise.WinterProject.logging.aspect;
 
+import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-
+@Log4j2
 @Aspect
 @Component
 public class LoggingAspect {
-    private final Logger logger = Logger.getLogger(LoggingAspect.class.getName());
 
-    @Pointcut("within(com.innowise.WinterProject.service.*)")
-    public void stringProcessingMethods() {
-    }
-
-
-    @Around("stringProcessingMethods()")
+    @Around("within(com.innowise.WinterProject.service.*)")
     public Object logMethodCall(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().toShortString();
 
-        String args = " ";
+        StringBuffer line = new StringBuffer();
+        line.append("\n").append(methodName).append("\nargs: ");
         try {
-            List<String> argsL = Arrays.stream(joinPoint.getArgs()).map(item -> item.toString() + " ").toList();
-            args = argsL.toString();
+            line.append(Arrays.stream(joinPoint.getArgs()).map(Object::toString).toList());
         } catch (Exception e) {
         }
+        log.info( line.toString());
 
-        long start = System.currentTimeMillis();
+        StopWatch stopWatch =new StopWatch();
+        stopWatch.start();
         Object proceed = joinPoint.proceed();
-        long executionTime = System.currentTimeMillis() - start;
+        stopWatch.stop();
 
-        logger.log(Level.INFO, "\n" + methodName + "\nargs: " + args + "\nprocesing time: " + executionTime + " ms");
+        line.setLength(0);
+        line.append("\nprocesing time: ").append(stopWatch.getTotalTimeMillis()).append("ms");
+
+        log.info( line.toString());
         return proceed;
     }
 }
