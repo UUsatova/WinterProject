@@ -1,8 +1,6 @@
 package com.innowise.WinterProject.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,6 +11,8 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode
 @Table(name = "groups")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Group {
 
     @Id

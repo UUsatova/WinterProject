@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,6 @@ public class AuthController {
     private final AuthService authService;
     private final UserMapper userAuthMapper;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Operation(summary = "Enter your credentials (login,password and role)")
     @ApiResponses(value = {

@@ -16,13 +16,12 @@ import java.util.stream.Collectors;
 public class ResponseExceptionHandler {
 
     @ExceptionHandler(value = ItemNotFoundException.class)
-    public ResponseEntity<Object> handleWrongIdException(
-            ItemNotFoundException ex) {
+    public ResponseEntity<Object> handleWrongIdException(ItemNotFoundException ex) {
         return ResponseEntity.badRequest().build();
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    protected ResponseEntity<Object> hadleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
 
 
         List<String> strings = ex.getBindingResult()
