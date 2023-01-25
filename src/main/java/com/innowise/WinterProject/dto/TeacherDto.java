@@ -18,19 +18,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TeacherDto {
-
     @NotNull(groups = Update.class)
     private UUID id;
-
     @NotEmpty(groups = Creation.class)
     @Size(max = 30, groups = {Creation.class, Update.class})
     private String firstName;
     @NotEmpty(groups = Creation.class)
     @Size(max = 30, groups = {Creation.class, Update.class})
     private String lastName;
-
-
-
     @Valid
     @NotNull(groups = Creation.class)
     private UserDto userDto;

@@ -18,7 +18,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +37,7 @@ public class TeachersController {
 
     private final TeacherService teacherService;
     private final TeacherMapper teacherMapper;
-    private  final UserMapper userAuthMapper;
+    private  final UserMapper userMapper;
 
     @Operation(summary = "Get all teachers")
     @ApiResponses(value = {
@@ -75,9 +82,8 @@ public class TeachersController {
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<TeacherDto> addTeacher(@RequestBody @Validated(Creation.class) TeacherDto teacherDto) {
         Teacher teacher = teacherMapper.dtoToTeacher(teacherDto);
-        User user = userAuthMapper.dtoToUser(teacherDto.getUserDto());
-        return ResponseEntity.ok(teacherMapper.teacherToDto(
-                teacherService.createTeacher(teacherMapper.dtoToTeacher(teacherDto),userAuthMapper.dtoToUser(teacherDto.getUserDto()))));
+        User user = userMapper.dtoToUser(teacherDto.getUserDto());
+        return ResponseEntity.ok(teacherMapper.teacherToDto(teacherService.createTeacher(teacher,user)));
     }
 
     @Operation(summary = "Delete teacher by id")

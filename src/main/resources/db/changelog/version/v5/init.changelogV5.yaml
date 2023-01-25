@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - includeAll: # список активных миграций
+      path: ./changeset
+      relativeToChangelogFile: true

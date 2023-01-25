@@ -1,7 +1,11 @@
 package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.dto.ScheduleDto;
-import com.innowise.WinterProject.entity.*;
+import com.innowise.WinterProject.entity.Discipline;
+import com.innowise.WinterProject.entity.Group;
+import com.innowise.WinterProject.entity.Room;
+import com.innowise.WinterProject.entity.Schedule;
+import com.innowise.WinterProject.entity.Teacher;
 import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import com.innowise.WinterProject.mapper.ScheduleMapper;
 import com.innowise.WinterProject.repository.ScheduleRepository;
