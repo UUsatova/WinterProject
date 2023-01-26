@@ -1,7 +1,7 @@
-package com.innowise.WinterProject.servise;
+package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.entity.Room;
-import com.innowise.WinterProject.exeption.WrongIdException;
+import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import com.innowise.WinterProject.mapper.RoomMapper;
 import com.innowise.WinterProject.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class RoomService {
     }
 
     public Room getRoomById(UUID id) {
-        return roomRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
+        return roomRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, Room.class));
     }
 
 
@@ -36,6 +36,6 @@ public class RoomService {
 
     public Room updateRoom(Room roomAfterChanges) {
         return roomRepository.save(roomMapper.updateRoom(
-                getRoomById(roomAfterChanges.getId()), roomAfterChanges));
+                roomAfterChanges,getRoomById(roomAfterChanges.getId())));
     }
 }

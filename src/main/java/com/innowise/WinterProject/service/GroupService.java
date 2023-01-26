@@ -1,7 +1,7 @@
-package com.innowise.WinterProject.servise;
+package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.entity.Group;
-import com.innowise.WinterProject.exeption.WrongIdException;
+import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import com.innowise.WinterProject.mapper.GroupMapper;
 import com.innowise.WinterProject.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +18,12 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
 
-    private final StudentService studentService;
-
     public List<Group> getAllGroups() {
         return groupRepository.findAll();
     }
 
     public Group getGroupById(UUID id) {
-        return groupRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
+        return groupRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, Group.class));
     }
 
     public Group addGroup(Group group) {
@@ -36,9 +34,9 @@ public class GroupService {
         groupRepository.deleteById(id);
     }
 
-    public Group updateGroup(Group groupAfterChanges) {      //точно так же смотря что апдейтим верноятно нужны изменения
-        return groupRepository.save(groupMapper.updateGroup( //можно ли запретить апдейтить колличество людей в группе
-                getGroupById(groupAfterChanges.getId()), groupAfterChanges));
+    public Group updateGroup(Group groupAfterChanges) {
+        return groupRepository.save(groupMapper.updateGroup(
+                 groupAfterChanges,getGroupById(groupAfterChanges.getId())));
     }
 
     public void increaseNumberOfStudentsInGroup(Group group) {

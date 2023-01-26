@@ -1,12 +1,12 @@
 package com.innowise.WinterProject.validation;
 
-import com.innowise.WinterProject.validationAnnotation.ExistInDatabase;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import com.innowise.WinterProject.validation.annotation.ExistInDatabase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public class IdExistValidator implements
         ConstraintValidator<ExistInDatabase, UUID> {
 
 
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
     private JpaRepository<Object, UUID> repository;
 
     @Override

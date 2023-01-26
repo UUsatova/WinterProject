@@ -1,7 +1,10 @@
 plugins {
+	id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
 	id 'java'
-	id 'org.springframework.boot' version '3.0.0'
+	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.1.0'
+
+
 }
 
 group = 'com.innowise'
@@ -20,6 +23,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+	compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
 
 	//Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.24'
@@ -33,6 +42,26 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-aop:2.7.5'
+
+
+
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.9'
+	implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.9'
+	implementation 'org.springdoc:springdoc-openapi-security:1.6.9'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.5'
+
+
+	testImplementation "org.testcontainers:postgresql:1.17.0"
+
+	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
+	testImplementation 'com.google.code.gson:gson:2.10.1'
+
+
+
+
 }
 
 tasks.named('test') {

@@ -1,11 +1,11 @@
 package com.innowise.WinterProject.validation;
 
 import com.innowise.WinterProject.repository.GroupRepository;
-import com.innowise.WinterProject.validationAnnotation.EmptyGroup;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import com.innowise.WinterProject.validation.annotation.EmptyGroup;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import java.util.UUID;
 
 @RequiredArgsConstructor

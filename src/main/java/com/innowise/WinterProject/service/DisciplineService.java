@@ -1,7 +1,7 @@
-package com.innowise.WinterProject.servise;
+package com.innowise.WinterProject.service;
 
 import com.innowise.WinterProject.entity.Discipline;
-import com.innowise.WinterProject.exeption.WrongIdException;
+import com.innowise.WinterProject.exeption.ItemNotFoundException;
 import com.innowise.WinterProject.mapper.DisciplineMapper;
 import com.innowise.WinterProject.repository.DisciplineRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class DisciplineService {
     }
 
     public Discipline getDisciplineById(UUID id) {
-        return disciplineRepository.findById(id).orElseThrow(() -> new WrongIdException(id));
+        return disciplineRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id, Discipline.class));
     }
 
 
@@ -36,6 +36,6 @@ public class DisciplineService {
 
     public Discipline updateDiscipline(Discipline disciplineAfterChanges) {
         return disciplineRepository.save(disciplineMapper.updateDiscipline(
-                getDisciplineById(disciplineAfterChanges.getId()), disciplineAfterChanges));
+                disciplineAfterChanges,getDisciplineById(disciplineAfterChanges.getId())));
     }
 }
