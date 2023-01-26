@@ -1,6 +1,7 @@
 package com.innowise.WinterProject.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.innowise.WinterProject.dto.GroupDto;
 import com.innowise.WinterProject.entity.Group;
 import com.innowise.WinterProject.mapper.GroupMapper;
@@ -46,14 +47,16 @@ public class GroupControllerTests {
     @Autowired
     ObjectMapper mapper;
 
+    private static final String URL  = "/groups";
+    private static final String URL_WITH_ID  = "/groups/123e4567-e89b-12d3-a456-426614174000";
 
     @Test
     @WithMockUser
     public void getGroupsReturnListOfGroupsInJsonArray() throws Exception {
 
-        Group group1 = new Group(UUID.randomUUID(), 1, 10, 1);
-        Group group2 = new Group(UUID.randomUUID(), 2, 20, 2);
-        Group group3 = new Group(UUID.randomUUID(), 3, 30, 3);
+        Group group1 = Group.builder().id(UUID.randomUUID()).number(1).numberOfStudents(1).year(1).build();
+        Group group2 = Group.builder().id(UUID.randomUUID()).number(2).numberOfStudents(2).year(2).build();
+        Group group3 = Group.builder().id(UUID.randomUUID()).number(3).numberOfStudents(3).year(3).build();
         List<Group> groups = Arrays.asList(group1, group2, group3);
         when(groupService.getAllGroups()).thenReturn(groups);
         GroupDto groupDto1 = new GroupDto(UUID.randomUUID(), 1, 10, 1);
@@ -65,7 +68,7 @@ public class GroupControllerTests {
         when(groupMapper.groupToDto(group3)).thenReturn(groupDto3);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/groups")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -83,7 +86,7 @@ public class GroupControllerTests {
     @Test
     @WithAnonymousUser
     public void getGroupsExecuteWithUnknownUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/groups")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden());
     }
 
@@ -91,12 +94,12 @@ public class GroupControllerTests {
     @Test
     @WithMockUser
     public void getGroupByIdReturnUserByPassedId() throws Exception {
-        Group group = new Group(UUID.randomUUID(), 1, 10, 1);
+        Group group = Group.builder().id(UUID.randomUUID()).number(1).numberOfStudents(1).year(1).build();
 
         when(groupService.getGroupById(any(UUID.class))).thenReturn(group);
         when(groupMapper.groupToDto(group)).thenReturn(new GroupDto(UUID.randomUUID(), 1, 10, 1));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/groups/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_WITH_ID)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -108,7 +111,7 @@ public class GroupControllerTests {
     @Test
     @WithAnonymousUser
     public void getGroupByIdExecuteWithUnknownUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/groups/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_WITH_ID)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden());
     }
 
@@ -116,16 +119,16 @@ public class GroupControllerTests {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void addGroupReturnAddedGroup() throws Exception {
-        GroupDto groupDto1 = mapper.readValue("{\"number\":1,\"year\":1}", GroupDto.class);
-        Group group = new Group(UUID.randomUUID(), 1, 0, 1);
-        GroupDto groupDto2 = new GroupDto(UUID.randomUUID(), 1, 0, 1);
+        GroupDto groupDto = new GroupDto(null, 1, null, 1);
+        Group group = Group.builder().id(UUID.randomUUID()).number(1).numberOfStudents(1).year(1).build();
+        GroupDto expectedGroupDto = new GroupDto(UUID.randomUUID(), 1, 1, 1);
 
-        when(groupMapper.dtoToGroup(groupDto1)).thenReturn(group);
+        when(groupMapper.dtoToGroup(groupDto)).thenReturn(group);
         when(groupService.addGroup(group)).thenReturn(group);
-        when(groupMapper.groupToDto(group)).thenReturn(groupDto2);
+        when(groupMapper.groupToDto(group)).thenReturn(expectedGroupDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/groups")
-                .content("{\"number\":1,\"year\":1}").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+                .content(new Gson().toJson(groupDto)).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.number", equalTo(group.getNumber())))
@@ -137,7 +140,7 @@ public class GroupControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void addGroupExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/groups")
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .content("{\"number\":1,\"year\":1}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -150,7 +153,7 @@ public class GroupControllerTests {
     @WithMockUser(roles = "ADMIN")
     public void removeGroupReturn202AndExecuteGroupService() throws Exception {
         doNothing().when(groupService).removeGroup(any(UUID.class));
-        mockMvc.perform(MockMvcRequestBuilders.delete("/groups/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID)
                 .contentType(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -161,7 +164,7 @@ public class GroupControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void removeGroupExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/groups/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID)
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isForbidden());
@@ -172,16 +175,17 @@ public class GroupControllerTests {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void updateGroupReturnAddedGroup() throws Exception {
-        GroupDto groupDto1 = mapper.readValue("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"number\":5,\"year\":5}", GroupDto.class);
-        Group group = new Group(UUID.randomUUID(), 5, 0, 5);
-        GroupDto groupDto2 = new GroupDto(UUID.randomUUID(), 5, 0, 5);
 
-        when(groupMapper.dtoToGroup(groupDto1)).thenReturn(group);
+        GroupDto groupDto = new GroupDto(UUID.randomUUID(), 1, null, 1);
+        Group group = Group.builder().id(UUID.randomUUID()).number(1).numberOfStudents(1).year(1).build();
+        GroupDto expectedGroupDto = new GroupDto(UUID.randomUUID(), 1, 1, 1);
+
+        when(groupMapper.dtoToGroup(groupDto)).thenReturn(group);
         when(groupService.updateGroup(group)).thenReturn(group);
-        when(groupMapper.groupToDto(group)).thenReturn(groupDto2);
+        when(groupMapper.groupToDto(group)).thenReturn(expectedGroupDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/groups")
-                .content("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"number\":5,\"year\":5}")
+        mockMvc.perform(MockMvcRequestBuilders.put(URL)
+                .content(new Gson().toJson(groupDto))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isOk())
@@ -194,7 +198,7 @@ public class GroupControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void updateGroupExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/groups")
+        mockMvc.perform(MockMvcRequestBuilders.put(URL)
                 .content("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"number\":1,\"year\":1}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

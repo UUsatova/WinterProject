@@ -60,6 +60,9 @@ public class TeacherControllerTests {
     @MockBean
     UserRepository userRepository;
 
+    private static final String URL = "/rooms";
+    private static final String URL_WITH_ID = "/rooms/123e4567-e89b-12d3-a456-426614174000";
+
     @Test
     @WithMockUser
     public void getTeachersReturnListOfTeachersInJsonArray() throws Exception {
@@ -79,7 +82,7 @@ public class TeacherControllerTests {
         when(teacherMapper.teacherToDto(teacher3)).thenReturn(teacherDto3);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/teachers")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -94,7 +97,7 @@ public class TeacherControllerTests {
     @Test
     @WithAnonymousUser
     public void getTeachersExecuteWithUnknownUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/teachers")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden());
     }
 
@@ -106,7 +109,7 @@ public class TeacherControllerTests {
         when(teacherService.getTeacherById(any(UUID.class))).thenReturn(teacher);
         when(teacherMapper.teacherToDto(teacher)).thenReturn(new TeacherDto(UUID.randomUUID(), "Pupic", "Rupic", null));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/teachers/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_WITH_ID)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -117,31 +120,31 @@ public class TeacherControllerTests {
     @Test
     @WithAnonymousUser
     public void getTeacherByIdExecuteWithUnknownUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/teachers/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_WITH_ID)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden());
     }
+
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void createTeacherReturnCreatedTeacher() throws Exception {
-        TeacherDto teacherDto1 = mapper.readValue("{\"firstName\":\"Elena\",\"lastName\":\"Cheb\",\"userDto\":{\n\"login\":\"Chepushila\",\"password\":\"Chepushila\",\"role\":\"TEACHER\"}}", TeacherDto.class);
+        String dataInJson = "{\"firstName\":\"Elena\",\"lastName\":\"Cheb\",\"userDto\":{\n\"login\":\"Chepushila\",\"password\":\"Chepushila\",\"role\":\"TEACHER\"}}";
+        TeacherDto teacherDto = mapper.readValue(dataInJson, TeacherDto.class);
         Teacher teacher = new Teacher(UUID.randomUUID(), "Elena", "Cheb");
 
-        UserDto userDto = mapper.readValue("{\"login\":\"Chepushila\",\"password\":\"Chepushila\",\"role\":\"TEACHER\"}",UserDto.class);
-        User user = new User(UUID.randomUUID(),"Chepushila","Chepushila", Role.TEACHER,UUID.randomUUID(),null);
+        UserDto userDto = mapper.readValue("{\"login\":\"Chepushila\",\"password\":\"Chepushila\",\"role\":\"TEACHER\"}", UserDto.class);
+        User user = new User(UUID.randomUUID(), "Chepushila", "Chepushila", Role.TEACHER, UUID.randomUUID(), null);
 
-        TeacherDto teacherDto2 = new TeacherDto(UUID.randomUUID(), "Elena", "Cheb", null);
-
-        when(teacherMapper.dtoToTeacher(teacherDto1)).thenReturn(teacher);
+        when(teacherMapper.dtoToTeacher(teacherDto)).thenReturn(teacher);
         when(userMapper.dtoToUser(userDto)).thenReturn(user);
-        when(teacherService.createTeacher(teacher,user)).thenReturn(teacher);
-        when(teacherMapper.teacherToDto(teacher)).thenReturn(teacherDto2);
+        when(teacherService.createTeacher(teacher, user)).thenReturn(teacher);
+        when(teacherMapper.teacherToDto(teacher)).thenReturn(teacherDto);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/teachers")
-                .content("{\"firstName\":\"Elena\",\"lastName\":\"Cheb\",\"userDto\":{\n\"login\":\"Chepushila\",\"password\":\"Chepushila\",\"role\":\"TEACHER\"}}")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+                        .content(dataInJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(teacher.getFirstName())))
@@ -152,7 +155,7 @@ public class TeacherControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void createTeacherExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/teachers")
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
                         .content("{\"firstName\":\"Elena\",\"lastName\":\"Cheb\",\"userDto\":{\n\"login\":\"Chepushila\",\"password\":\"Chepushila\",\"role\":\"TEACHER\"}}")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -165,7 +168,7 @@ public class TeacherControllerTests {
     @WithMockUser(roles = "ADMIN")
     public void removeTeacherReturn202AndExecuteTeacherService() throws Exception {
         doNothing().when(teacherService).removeTeacher(any(UUID.class));
-        mockMvc.perform(MockMvcRequestBuilders.delete("/teachers/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID)
                         .contentType(MediaType.APPLICATION_JSON).
                         accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -176,7 +179,7 @@ public class TeacherControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void removeTeacherExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/teachers/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isForbidden());
@@ -186,18 +189,17 @@ public class TeacherControllerTests {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void updateTeacherReturnUpdatedTeacher() throws Exception {
-        TeacherDto teacherDto1 = mapper.readValue("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"firstName\":\"Elena\",\"lastName\":\"Cheb\"}", TeacherDto.class);
+        String dataInJson = "{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"firstName\":\"Elena\",\"lastName\":\"Cheb\"}";
+        TeacherDto teacherDto = mapper.readValue(dataInJson, TeacherDto.class);
         Teacher teacher = new Teacher(UUID.randomUUID(), "Elena", "Cheb");
 
-        TeacherDto teacherDto2 = new TeacherDto(UUID.randomUUID(), "Elena", "Cheb", null);
-
-        when(teacherMapper.dtoToTeacher(teacherDto1)).thenReturn(teacher);
+        when(teacherMapper.dtoToTeacher(teacherDto)).thenReturn(teacher);
         when(teacherService.updateTeacher(teacher)).thenReturn(teacher);
-        when(teacherMapper.teacherToDto(teacher)).thenReturn(teacherDto2);
+        when(teacherMapper.teacherToDto(teacher)).thenReturn(teacherDto);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/teachers")
-                        .content("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"firstName\":\"Elena\",\"lastName\":\"Cheb\"}")
+        mockMvc.perform(MockMvcRequestBuilders.put(URL)
+                        .content(dataInJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -210,7 +212,7 @@ public class TeacherControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void updateTeacherExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/teachers")
+        mockMvc.perform(MockMvcRequestBuilders.put(URL)
                         .content("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"firstName\":\"Elena\",\"lastName\":\"Cheb\"}")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

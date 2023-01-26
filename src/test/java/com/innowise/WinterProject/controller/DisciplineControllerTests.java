@@ -47,6 +47,10 @@ public class DisciplineControllerTests {
     @Autowired
     ObjectMapper mapper;
 
+    private static final String URL  = "/disciplines";
+    private static final String URL_WITH_ID  = "/disciplines/123e4567-e89b-12d3-a456-426614174000";
+
+
     @Test
     @WithMockUser
     public void getDisciplineReturnListOfDisciplinesInJsonArray() throws Exception {
@@ -65,7 +69,7 @@ public class DisciplineControllerTests {
         when(disciplineMapper.disciplineToDto(discipline3)).thenReturn(disciplineDto3);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/disciplines")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -77,7 +81,7 @@ public class DisciplineControllerTests {
     @Test
     @WithAnonymousUser
     public void getGroupsExecuteWithUnknownUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/disciplines")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden());
     }
 
@@ -89,7 +93,7 @@ public class DisciplineControllerTests {
         when(disciplineService.getDisciplineById(any(UUID.class))).thenReturn(discipline);
         when(disciplineMapper.disciplineToDto(discipline)).thenReturn(new DisciplineDto(UUID.randomUUID(), "chijik pijik"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/disciplines/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_WITH_ID)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -100,22 +104,22 @@ public class DisciplineControllerTests {
     @WithAnonymousUser
     @DisplayName("GET returns 403")
     public void getGroupById_executeWithUnknownUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/disciplines/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_WITH_ID)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void addDisciplineReturnAddedDiscipline() throws Exception {
-        DisciplineDto disciplineDto1 = mapper.readValue("{\"name\":\"boojy\"}", DisciplineDto.class);
+        String dataInJson = "{\"name\":\"boojy\"}";
+        DisciplineDto disciplineDto = mapper.readValue(dataInJson, DisciplineDto.class);
         Discipline discipline = new Discipline(UUID.randomUUID(), "boojy");
-        DisciplineDto disciplineDto2 = new DisciplineDto(UUID.randomUUID(), "boojy");
 
-        when(disciplineMapper.dtoToDiscipline(disciplineDto1)).thenReturn(discipline);
+        when(disciplineMapper.dtoToDiscipline(disciplineDto)).thenReturn(discipline);
         when(disciplineService.addDiscipline(discipline)).thenReturn(discipline);
-        when(disciplineMapper.disciplineToDto(discipline)).thenReturn(disciplineDto2);
+        when(disciplineMapper.disciplineToDto(discipline)).thenReturn(disciplineDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/disciplines").content("{\"name\":\"boojy\"}")
+        mockMvc.perform(MockMvcRequestBuilders.post(URL).content(dataInJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -126,7 +130,7 @@ public class DisciplineControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void addDisciplineExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/disciplines")
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
                         .content("{\"name\":\"boojy\"}")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -139,7 +143,7 @@ public class DisciplineControllerTests {
     @WithMockUser(roles = "ADMIN")
     public void removeDisciplineReturn202AndExecuteDisciplineService() throws Exception {
         doNothing().when(disciplineService).removeDiscipline(any(UUID.class));
-        mockMvc.perform(MockMvcRequestBuilders.delete("/disciplines/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID)
                         .contentType(MediaType.APPLICATION_JSON).
                         accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -150,7 +154,7 @@ public class DisciplineControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void removeDisciplineExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/disciplines/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isForbidden());
@@ -160,16 +164,16 @@ public class DisciplineControllerTests {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void updateDisciplineReturnAddedGroup() throws Exception {
-        DisciplineDto disciplineDto1 = mapper.readValue("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"name\":\"haha\"}", DisciplineDto.class);
+        String dataInJson = "{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"name\":\"haha\"}";
+        DisciplineDto disciplineDto = mapper.readValue(dataInJson, DisciplineDto.class);
         Discipline discipline = new Discipline(UUID.randomUUID(), "haha");
-        DisciplineDto disciplineDto2 = new DisciplineDto(UUID.randomUUID(), "haha");
 
-        when(disciplineMapper.dtoToDiscipline(disciplineDto1)).thenReturn(discipline);
+        when(disciplineMapper.dtoToDiscipline(disciplineDto)).thenReturn(discipline);
         when(disciplineService.updateDiscipline(discipline)).thenReturn(discipline);
-        when(disciplineMapper.disciplineToDto(discipline)).thenReturn(disciplineDto2);
+        when(disciplineMapper.disciplineToDto(discipline)).thenReturn(disciplineDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/disciplines")
-                .content("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"name\":\"haha\"}")
+        mockMvc.perform(MockMvcRequestBuilders.put(URL)
+                .content(dataInJson)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -181,7 +185,7 @@ public class DisciplineControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void updateDisciplineExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/disciplines")
+        mockMvc.perform(MockMvcRequestBuilders.put(URL)
                         .content("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"name\":\"haha\"}")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

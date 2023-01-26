@@ -108,7 +108,8 @@ public class StudentsController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StudentDto> updateStudent(@RequestBody @Validated(Update.class) StudentDto studentDto) {
         Student student = studentMapper.dtoToStudent(studentDto);
-        studentService.updateStudent(student);
+        System.out.println(student);
+        System.out.println(studentService.updateStudent(student)); //////
         return ResponseEntity.ok(studentMapper.studentToDto(
                 studentService.updateStudent(student)));
     }

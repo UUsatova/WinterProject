@@ -50,6 +50,9 @@ public class RoomControllerTests {
     ObjectMapper mapper;
 
 
+    private static final String URL = "/rooms";
+    private static final String URL_WITH_ID = "/rooms/123e4567-e89b-12d3-a456-426614174000";
+
     @Test
     @WithMockUser
     public void getRoomsReturnListOfRoomsInJsonArray() throws Exception {
@@ -68,7 +71,7 @@ public class RoomControllerTests {
         when(roomMapper.roomToDto(room3)).thenReturn(roomDto3);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/rooms")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk()).
@@ -85,7 +88,7 @@ public class RoomControllerTests {
     public void getRoomsExecuteWithUnknownUser() throws Exception {
         when(roomService.getAllRooms()).thenReturn(new ArrayList<>());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/rooms")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden());
     }
 
@@ -97,7 +100,7 @@ public class RoomControllerTests {
         when(roomService.getRoomById(any(UUID.class))).thenReturn(room);
         when(roomMapper.roomToDto(room)).thenReturn(new RoomDto(UUID.randomUUID(), 1, "one"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/rooms/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_WITH_ID)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -108,16 +111,16 @@ public class RoomControllerTests {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void addRoomReturnAddedRoom() throws Exception {
-        RoomDto roomDto1 = mapper.readValue("{\"number\":1,\"address\":\"one\"}", RoomDto.class);
+        String dataInJson = "{\"number\":1,\"address\":\"one\"}";
+        RoomDto roomDto = mapper.readValue(dataInJson, RoomDto.class);
         Room room = new Room(UUID.randomUUID(), 1, "one");
-        RoomDto roomDto2 = new RoomDto(UUID.randomUUID(), 1, "one");
 
-        when(roomMapper.dtoToRoom(roomDto1)).thenReturn(room);
+        when(roomMapper.dtoToRoom(roomDto)).thenReturn(room);
         when(roomService.addRoom(room)).thenReturn(room);
-        when(roomMapper.roomToDto(room)).thenReturn(roomDto2);
+        when(roomMapper.roomToDto(room)).thenReturn(roomDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rooms")
-                        .content("{\"number\":1,\"address\":\"one\"}")
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+                        .content(dataInJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -130,7 +133,7 @@ public class RoomControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void addRoomExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/rooms")
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
                         .content("{\"number\":1,\"address\":\"one\"}")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -143,7 +146,7 @@ public class RoomControllerTests {
     @WithMockUser(roles = "ADMIN")
     public void removeRoomReturn202AndExecuteRoomService() throws Exception {
         doNothing().when(roomService).removeRoom(any(UUID.class));
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rooms/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -154,7 +157,7 @@ public class RoomControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void removeGroupExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rooms/123e4567-e89b-12d3-a456-426614174000")
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -165,16 +168,16 @@ public class RoomControllerTests {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void updateGroupReturnAddedGroup() throws Exception {
-        RoomDto roomDto1 = mapper.readValue("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"number\":5}", RoomDto.class);
+        String dataInJson = "{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"number\":5}";
+        RoomDto roomDto = mapper.readValue(dataInJson, RoomDto.class);
         Room room = new Room(UUID.randomUUID(), 5, "one");
-        RoomDto roomDto2 = new RoomDto(UUID.randomUUID(), 5, "one");
 
-        when(roomMapper.dtoToRoom(roomDto1)).thenReturn(room);
+        when(roomMapper.dtoToRoom(roomDto)).thenReturn(room);
         when(roomService.updateRoom(room)).thenReturn(room);
-        when(roomMapper.roomToDto(room)).thenReturn(roomDto2);
+        when(roomMapper.roomToDto(room)).thenReturn(roomDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/rooms")
-                        .content("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"number\":5}")
+        mockMvc.perform(MockMvcRequestBuilders.put(URL)
+                        .content(dataInJson)
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -187,7 +190,7 @@ public class RoomControllerTests {
     @Test
     @WithMockUser(roles = {"TEACHER", "STUDENT"})
     public void updateRoomExecutedWithoutAdminRightsReturn403() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/rooms")
+        mockMvc.perform(MockMvcRequestBuilders.put(URL)
                         .content("{\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"number\":1}")
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
