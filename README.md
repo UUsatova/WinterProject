@@ -18,3 +18,5 @@ Liquibase
 Junit
 Postgresql
 Swagger
+Docker
+Docker-compose
